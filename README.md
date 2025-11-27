@@ -7,8 +7,14 @@ Clone this repo:
 ```
 git clone git@github.com:sara-nl/picas_cortex.git
 ```
-Install picas and set environment ....
+Install dependencies in a virtual environment, for example:
 
+```
+python3 -m virtualenv <dirname>/venv
+source <dirname>/venv/bin/activate
+pip install -r requirements.txt
+```
+where <dirname> is the directory for the virtual environment.
 
 Initial test run
 ---
