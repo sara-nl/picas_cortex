@@ -4,8 +4,6 @@
 ######## INPUT #######
 ######################
 
-VENV=/project/lofarvwf/Public/jdejong/cloudbursting/ddcaltest7.0.0/venv
-
 export TOIL_SLURM_ARGS="--export=ALL -t 12:00:00"
 SING_BIND="/project/lofarvwf/"
 
@@ -13,9 +11,6 @@ SING_BIND="/project/lofarvwf/"
 ######################
 
 # SETUP ENVIRONMENT
-
-# set up software
-source ${VENV}/bin/activate
 
 mkdir -p software
 cd software
@@ -48,7 +43,7 @@ export TOIL_CHECK_ENV=True
 # download neural network to cache
 NNCACHE=$PWD/nn_cache
 singularity exec $CACHEDIR/vlbi-cwl.sif download_NN --cache_directory $NNCACHE
-chmod -R 755 $NNCACHE
+chmod -R 777 $NNCACHE
 
 ########################
 
@@ -88,4 +83,3 @@ software/VLBI_cwl/workflows/dd-calibration.cwl input.json
 
 ########################
 
-deactivate
