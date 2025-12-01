@@ -32,7 +32,9 @@ cp ${script_dir}/*.sh ${workdir}/jobid_${SLURM_JOB_ID}/.
 cd ${workdir}/jobid_${SLURM_JOB_ID}
 
 # You may set environmental variables needed in the SLURM job or load them from a script:
-# source slurm_env.sh
+source /project/lofarvwf/Public/hhu/venv/bin/activate
 
+# Run pilot job
 python pilot.py "ddcal"
 
+deactivate

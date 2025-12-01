@@ -40,6 +40,8 @@ def create_tokens(workflow, fields: dict, offset: int = 0) -> list:
     # username
     username =  getpass.getuser()
 
+    # Use the DB to store information for reference (paths to software etc.)
+    # These will be fetched from the token and used in processing (passed to master_ddcal.sh)
     tokens = []
     n_docs = offset
     for arg in fields:
@@ -70,7 +72,8 @@ def create_tokens(workflow, fields: dict, offset: int = 0) -> list:
 
 def loadTokens(db, tokensfile):
 
-    # Get number of token parameters from tokensfile
+    # Get number of token parameters from tokensfile (in this case, folder MSDATA with observations)
+    # We assume that if multiple observations need to be processed, they are in different MSDATA folders
     with open(tokensfile) as f:
         msdata = {"MSDATA": f.read().splitlines()}
     workflow = "ddcal"

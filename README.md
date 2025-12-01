@@ -14,34 +14,51 @@ python3 -m virtualenv <dirname>/venv
 source <dirname>/venv/bin/activate
 pip install -r requirements.txt
 ```
-where <dirname> is the directory for the virtual environment.
+where `<dirname>` is the directory where the virtual environment is installed.
 
-Initial test run
+Original test run
 ---
+This is the original test run, with nothing changed.
 ```
 cd picas_cortex/jobs
 sbatch ddcal.sh
 ```
+If finished successfully, there should be output in `outdir`. Note: currently does not work under user's home. Hence, run it under `/project/lofarvwf/Public`.
 
 
-Create tokens
+Run with PiCaS
 ---
-First create inputfile `tokensfile.txt` and `input.json`.
+
+###  Create tokens
+
+First create inputfile `tokensfile.txt`. There will be a token generated for each line. 
+The line gives the directory with the observation to be processed. 
+For example, for the test run:
+```
+cd ../picas_cortex/tokens
+echo "/project/lofarvwf/Public/jdejong/picas_test/msdata" > tokensfile.txt
+```
+To connect to the PiCaS database (DB), you need to have a `picasconfig.py` with your credentials.
+You can copy "picasconfig_template.py" and fill it in. IMPORTANT: if you are running in a shared or public directory, make sure you change the permissions of picasconfig.py so that it is not readable by others!
 
 ```
-cd picas_cortex/tokens
-python push_tokens.py tokensfile.txt input.json
+chmod 700 picasconfig.py
 ```
 
-Run Jobs
----
-Directly:
+Now create the tokens and store them in the DB with:
 ```
-cd picas_cortex/jobs
-python pilot.py ddcal
+python push_tokens.py tokensfile.txt
 ```
+Go to the DB (https://picas.grid.sara.nl:6984/_utils/) and check if the tokens were created succesfully.
 
+### Run Jobs
 Via slurm scheduler:
 ``
+cd ../picas_cortex/jobs
 sbatch slurm_ddcal.sh
 ``
+
+For testing, you can also run the pilot job directly on the UI (not recommended as the job takes hours):
+```
+python pilot.py ddcal
+```
