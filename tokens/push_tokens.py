@@ -51,7 +51,8 @@ def create_tokens(workflow, fields: dict, offset: int = 0) -> list:
                 'hostname': '',
                 'scrub_count': 0,
                 'toil_retry': 2,
-                'repo': 'https://git.astron.nl/RD/VLBI-cwl.git',   
+                'repo': 'https://git.astron.nl/RD/VLBI-cwl.git',
+                'cat': '/project/lofarvwf/Public/jdejong/picas_test/msdata',
                 'exit_code': '',
                 'wms_jobid':'',
                 'workflow': workflow,
@@ -64,33 +65,16 @@ def create_tokens(workflow, fields: dict, offset: int = 0) -> list:
 
 
 
-def loadTokens(db, tokensfile, inputfile):
+def loadTokens(db, tokensfile):
 
     # Get number of token parameters from tokensfile
     with open(tokensfile) as f:
-        obs = {"observation": f.read().splitlines()}
+        msdata = {"msdata": f.read().splitlines()}
     workflow = "ddcal"
         
     # get tokens
-    tokens = create_tokens(workflow, obs, offset=db.doc_count())
+    tokens = create_tokens(workflow, msdata, offset=db.doc_count())
 
-    # Put input file as attachment to token
-    for doc in tokens:
-       # Put setting file in attachment to token
-       remaining_tries = 3
-       while remaining_tries > 0:
-          try:
-             f = open(inputfile, 'rb')
-             doc.put_attachment(os.path.basename(inputfile), f.read())
-             f.close()
-             remaining_tries = 0
-          except Exception as err:
-             print("Error attaching inputfile to token: {}".format(str(err)))
-             if remaining_tries > 0:
-                remaining_tries -= 1
-                print("Trying again ({} tries left).".format(remaining_tries))
-                time.sleep(1)
-    
     # store tokens on DB
     db.save_documents(tokens)
  
@@ -108,8 +92,7 @@ def get_db():
 if __name__ == '__main__':
    # Pass tokenfile and inputfile to token
    tokensfile = sys.argv[1]
-   inputfile = sys.argv[2]
    #Create a connection to the DB server
    db = get_db()
    #create and load the tokens to DB
-   loadTokens(db, tokensfile, inputfile)
+   loadTokens(db, tokensfile)

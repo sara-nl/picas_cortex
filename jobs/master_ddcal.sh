@@ -4,6 +4,11 @@
 ######## INPUT #######
 ######################
 
+# Put information in tokens, so it is stored in the DB for reference
+CAT=$1 #/project/lofarvwf/Public/jdejong/picas_test/final_dd_selection.csv
+MSDATA=$2 #/project/lofarvwf/Public/jdejong/picas_test/msdata
+REPO=$3 #https://git.astron.nl/RD/VLBI-cwl.git
+
 export TOIL_SLURM_ARGS="--export=ALL -t 12:00:00"
 SING_BIND="/project/lofarvwf/"
 
@@ -14,7 +19,7 @@ SING_BIND="/project/lofarvwf/"
 
 mkdir -p software
 cd software
-git clone https://git.astron.nl/RD/VLBI-cwl.git VLBI_cwl
+git clone $REPO VLBI_cwl
 cd ../
 
 # set up singularity
@@ -24,7 +29,7 @@ mkdir -p $CACHEDIR
 cp /project/lofarvwf/Public/jdejong/picas_test/test_sep_2025.sif $CACHEDIR/$SIMG
 mkdir -p $CACHEDIR/pull
 cp $CACHEDIR/$SIMG $CACHEDIR/pull/vlbi-cwl.sif
-chmod -R 755 $CACHEDIR
+chmod 755 -R $CACHEDIR
 
 # set up environment variables
 export VLBI_DATA_ROOT=$PWD/software/VLBI_cwl
@@ -40,10 +45,41 @@ export TOIL_CHECK_ENV=True
 
 ########################
 
-# download neural network to cache
+# Make JSON file
+JSON="input.json"
+
+# Add MS
+json="{\"msin\":["
+for file in "$MSDATA"/*.ms; do
+    json="$json{\"class\": \"Directory\", \"path\": \"$file\"},"
+done
+json="${json%,}]}"
+echo "$json" > "$JSON"
+
+# Add source_catalogue file
+jq --arg path "$CAT" \
+   '. + {
+     "source_catalogue": {
+       "class": "File",
+       "path": $path
+     }
+   }' "$JSON" > temp.json && mv temp.json "$JSON"
+
+jq --arg path "$CAT" \
+   '. + {
+     "custom_phasediff_score_csv": {
+       "class": "File",
+       "path": $path
+     }
+   }' "$JSON" > temp.json && mv temp.json "$JSON"
+
+
 NNCACHE=$PWD/nn_cache
 singularity exec $CACHEDIR/vlbi-cwl.sif download_NN --cache_directory $NNCACHE
-chmod -R 777 $NNCACHE
+jq --arg NNCACHE "$NNCACHE" '. + {model_cache: $NNCACHE}' "$JSON" > temp.json && mv temp.json "$JSON"
+
+SELECTION=false
+jq --argjson SELECTION "$SELECTION" '. + {dd_selection: $SELECTION}' "$JSON" > temp.json && mv temp.json "$JSON"
 
 ########################
 
@@ -82,4 +118,3 @@ toil-cwl-runner \
 software/VLBI_cwl/workflows/dd-calibration.cwl input.json
 
 ########################
-

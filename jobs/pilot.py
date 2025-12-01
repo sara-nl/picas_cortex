@@ -15,12 +15,8 @@ description:
 import os
 import time
 import sys
-
-# import picasconfig.py from config folder
-parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-sys.path.append(parent_dir+"/config")
+import json
 import picasconfig
-
 #picas imports
 from picas.actors import RunActor
 from picas.clients import CouchDB
@@ -44,19 +40,9 @@ class ExampleActor(RunActor):
             print(key, value)
         print("-----------------------")
 
-        # Get attached files from token
-        # inputfilenames
-        filename = f"input.json"
-        att_file = self.client.db.get_attachment(token['_id'], filename, 0)
-        if att_file == 0:
-           print('Error: no attached file ', filename)
-        else: 
-           # Write attached file to local file
-           with open(filename, 'w') as f:
-               f.write(att_file.read().decode('utf-8')) 
 
         # Start running the main job        
-        command = ["/usr/bin/time", f"./master_{str(token['workflow'])}.sh"]
+        command = ["/usr/bin/time", f"./master_{str(token['workflow'])}.sh", token['cat'], token['msdata'], token['repo']]
         print(command)
         
         out = execute(command)
@@ -84,6 +70,12 @@ class ExampleActor(RunActor):
 
             log_handle = open(logserr, 'rb')
             token.put_attachment(logserr, log_handle.read())
+            # Attach used input.json in token
+            if token['exit_code']==0 and token['workflow']=='ddcal':
+               filename = ""
+               f = open("input.json", 'rb')
+               token.put_attachment(filename, f.read())
+               f.close()
 
         except:
            pass
