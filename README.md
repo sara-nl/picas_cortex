@@ -53,10 +53,13 @@ Go to the DB (https://picas.grid.sara.nl:6984/_utils/) and check if the tokens w
 
 ### Run Jobs
 Via slurm scheduler:
-``
+```
 cd ../picas_cortex/jobs
 sbatch slurm_ddcal.sh
-``
+```
+The script sets up the environment and runs the pilot job `pilot.py`. The pilot job makes connection the PiCaS DB, 
+fetches a "todo" token and starts processing, i.e. running the `master_ddcal.sh`, which is just a slight adaptation of `ddcal.sh`.
+
 
 For testing, you can also run the pilot job directly on the UI (not recommended as the job takes hours):
 ```
