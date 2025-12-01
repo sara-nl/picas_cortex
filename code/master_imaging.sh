@@ -34,7 +34,7 @@ cp facets.reg ${TMPDIR}
 cp ${SOLS} ${TMPDIR}
 cd ${TMPDIR}
 
-singularity exec -B /project/lofarvwf/Public ${SIMG} \
+singularity exec -B $BIND_DIR ${SIMG} \
 wsclean \
 -update-model-required \
 -gridder wgridder \

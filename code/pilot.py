@@ -46,28 +46,30 @@ class ExampleActor(RunActor):
         if workflow=="ddcal":
             command = ["/usr/bin/time", f"./master_{workflow}.sh",
                     token['MSDATA'], token['SING_BIND'], token['SIMG'], token['CAT'], token['REPO'], token['SUBMODS']]
+            # Put location of output in token (created in master_ddcal.sh script)
+            token['output'] = os.getcwd() + "/outdir"        
         elif workflow=="imaging":
             command = ["/usr/bin/time", f"./master_{workflow}.sh",
                     token['MSDATA'], token['BIND_DIR'], token['SIMG'], token['SOLS']]
+            # Put location of output in token (created in master_imaging.sh script)
+            token['output'] = os.getcwd() + "/imaging_output" 
 
-        print(command)
-        
+        print(command)        
         out = execute(command)
-
-        logsout = f"logs_{token['_id']}.out"
-        logserr = f"logs_{token['_id']}.err"
-
-        # write the logs
-        with open(logsout, 'w') as f:
-            f.write(out[2].decode('utf-8'))
-        with open(logserr, 'w') as f:
-            f.write(out[3].decode('utf-8'))
-
         self.subprocess = out[0]
 
         # Get the job exit code and done in the token
         token['exit_code'] = out[1]           
         token = self.modifier.close(token)
+
+        # write the logs
+        logsout = f"logs_{token['_id']}.out"
+        logserr = f"logs_{token['_id']}.err"
+
+        with open(logsout, 'w') as f:
+            f.write(out[2].decode('utf-8'))
+        with open(logserr, 'w') as f:
+            f.write(out[3].decode('utf-8'))
 
         # Attach logs in token
         curdate = time.strftime("%d/%m/%Y_%H:%M:%S_")

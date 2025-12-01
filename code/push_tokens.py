@@ -70,6 +70,7 @@ def create_tokens(workflow, fields: dict, offset: int = 0) -> list:
                 'toil_retry': 2,
                 'exit_code': '',
                 'wms_jobid':'',
+                'output': '',
                 'workflow': workflow,
                 arg: line,
             }
