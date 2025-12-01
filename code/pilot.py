@@ -101,8 +101,7 @@ def main():
     modifier = BasicTokenModifier()
 
     # Create actor
-    actor = ExampleActor(client, modifier, "todo", design_doc="Monitor")
-    #actor = ExampleActor(client, modifier, "todo", design_doc=workflow)    
+    actor = ExampleActor(client, modifier, "todo", design_doc=workflow)    
     # Start work!
     print("Connected to the database %s sucessfully. Now starting work..." %(picasconfig.PICAS_DATABASE))
 

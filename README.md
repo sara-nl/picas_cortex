@@ -29,6 +29,19 @@ If finished successfully, there should be output in `outdir`. Note: currently do
 Run with PiCaS
 ---
 
+### Create views
+
+If you start with an empty DB, you first need to create views. Standard views ("Monitor") are created with:
+```
+cd picas_cortex/code 
+python create_views.py
+```
+For this PoC, we also need additional views for specific workflows ("ddcal" and "imaging"), Create these with:
+```
+python create_views.py workflows
+```
+
+
 ###  Create tokens
 
 First create inputfile `tokensfile.txt`. There will be a token generated for each line. 
@@ -47,7 +60,7 @@ chmod 700 picasconfig.py
 
 Now create the tokens and store them in the DB with:
 ```
-python push_tokens.py tokensfile.txt
+python push_tokens.py ddcal tokensfile.txt
 ```
 Go to the DB (https://picas.grid.sara.nl:6984/_utils/) and check if the tokens were created succesfully.
 
