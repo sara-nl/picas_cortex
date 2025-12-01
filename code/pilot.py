@@ -41,9 +41,15 @@ class ExampleActor(RunActor):
         print("-----------------------")
 
 
-        # Start running the main job        
-        command = ["/usr/bin/time", f"./master_{str(token['workflow'])}.sh",
-                   token['MSDATA'], token['CAT'], token['REPO'], token['SING_BIND'], token['SIMG'], token['SUBMODS']]
+        # Start running the main job
+        workflow=str(token['workflow'])
+        if workflow=="ddcal":
+            command = ["/usr/bin/time", f"./master_{workflow}.sh",
+                    token['MSDATA'], token['SING_BIND'], token['SIMG'], token['CAT'], token['REPO'], token['SUBMODS']]
+        elif workflow=="imaging":
+            command = ["/usr/bin/time", f"./master_{workflow}.sh",
+                    token['MSDATA'], token['BIND_DIR'], token['SIMG'], token['SOLS']]
+
         print(command)
         
         out = execute(command)

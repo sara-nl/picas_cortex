@@ -6,10 +6,10 @@
 
 # Use the DB to store information for reference (paths to software etc.)
 MSDATA=$1 #/project/lofarvwf/Public/jdejong/picas_test/msdata
-CAT=$2 #/project/lofarvwf/Public/jdejong/picas_test/final_dd_selection.csv
-REPO=$3 #https://git.astron.nl/RD/VLBI-cwl.git
-SING_BIND=$4 #'/project/lofarvwf/'
-SIMG_ORIGINAL=$5 #/project/lofarvwf/Public/jdejong/picas_test/test_sep_2025.sif
+SING_BIND=$2 #'/project/lofarvwf/'
+SIMG_ORIGINAL=$3 #/project/lofarvwf/Public/jdejong/picas_test/test_sep_2025.sif
+CAT=$4 #/project/lofarvwf/Public/jdejong/picas_test/final_dd_selection.csv
+REPO=$5 #https://git.astron.nl/RD/VLBI-cwl.git
 SUBMODS=$6 #/project/lofarvwf/Software/lofar_facet_selfcal/submods
 
 

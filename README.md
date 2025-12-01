@@ -18,9 +18,9 @@ where `<dirname>` is the directory where the virtual environment is installed.
 
 Original test run
 ---
-This is the original test run, with nothing changed.
+This is the original test run, nothing changed. It is given here just for reference; can be skipped.
 ```
-cd picas_cortex/jobs
+cd picas_cortex/code
 sbatch ddcal.sh
 ```
 If finished successfully, there should be output in `outdir`. Note: currently does not work under user's home. Hence, run it under `/project/lofarvwf/Public`.
@@ -35,7 +35,7 @@ First create inputfile `tokensfile.txt`. There will be a token generated for eac
 The line gives the directory with the observation to be processed. 
 For example, for the test run:
 ```
-cd ../picas_cortex/tokens
+cd picas_cortex/code
 echo "/project/lofarvwf/Public/jdejong/picas_test/msdata" > tokensfile.txt
 ```
 To connect to the PiCaS database (DB), you need to have a `picasconfig.py` with your credentials.
@@ -54,7 +54,6 @@ Go to the DB (https://picas.grid.sara.nl:6984/_utils/) and check if the tokens w
 ### Run Jobs
 Via slurm scheduler:
 ```
-cd ../picas_cortex/jobs
 sbatch slurm_ddcal.sh
 ```
 The script sets up the environment and runs the pilot job `pilot.py`. The pilot job makes connection the PiCaS DB, 

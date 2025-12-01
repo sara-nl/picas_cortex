@@ -22,6 +22,21 @@ import picasconfig
 from picas.documents import Task
 
 
+ddcal_fields = {
+                'CAT': '/project/lofarvwf/Public/jdejong/picas_test/final_dd_selection.csv',
+                'REPO': 'https://git.astron.nl/RD/VLBI-cwl.git',                
+                'SING_BIND': '/project/lofarvwf/',
+                'SIMG': '/project/lofarvwf/Public/jdejong/picas_test/test_sep_2025.sif', 
+                'SUBMODS': '/project/lofarvwf/Software/lofar_facet_selfcal/submods'    
+}
+
+imaging_fields = {
+                'SIMG': '/project/lofarvwf/Public/jdejong/picas_test/test_sep_2025.sif', 
+                'BIND_DIR': '/project/lofarvwf/Public',
+                'SOLS': 'outdir/merged.h5',
+}
+
+
 def create_tokens(workflow, fields: dict, offset: int = 0) -> list:
     """
     Create the tokens as a list of Task documents.
@@ -53,16 +68,17 @@ def create_tokens(workflow, fields: dict, offset: int = 0) -> list:
                 'hostname': '',
                 'scrub_count': 0,
                 'toil_retry': 2,
-                'CAT': '/project/lofarvwf/Public/jdejong/picas_test/final_dd_selection.csv',
-                'REPO': 'https://git.astron.nl/RD/VLBI-cwl.git',                
-                'SING_BIND': '/project/lofarvwf/',
-                'SIMG': '/project/lofarvwf/Public/jdejong/picas_test/test_sep_2025.sif', 
-                'SUBMODS': '/project/lofarvwf/Software/lofar_facet_selfcal/submods',       
                 'exit_code': '',
                 'wms_jobid':'',
                 'workflow': workflow,
                 arg: line,
             }
+            if workflow=="ddcal":
+                token.update(ddcal_fields)
+            elif workflow=="imaging":
+                token.update(imaging_fields)
+            else:
+                sys.exit(f"Error: unknown workflow {workflow}. Choose 'ddcal' or 'imaging'")
             tokens.append(Task(token))
             n_docs += 1
 
@@ -70,13 +86,12 @@ def create_tokens(workflow, fields: dict, offset: int = 0) -> list:
 
 
 
-def loadTokens(db, tokensfile):
+def loadTokens(db, workflow, tokensfile):
 
     # Get number of token parameters from tokensfile (in this case, folder MSDATA with observations)
     # We assume that if multiple observations need to be processed, they are in different MSDATA folders
     with open(tokensfile) as f:
         msdata = {"MSDATA": f.read().splitlines()}
-    workflow = "ddcal"
         
     # get tokens
     tokens = create_tokens(workflow, msdata, offset=db.doc_count())
@@ -96,9 +111,11 @@ def get_db():
 
 
 if __name__ == '__main__':
-   # Pass tokenfile and inputfile to token
-   tokensfile = sys.argv[1]
+   # Pass tokenfile and workflow to token
+   workflow = sys.argv[1] # ddcal or imaging
+   tokensfile = sys.argv[2]
+
    #Create a connection to the DB server
    db = get_db()
    #create and load the tokens to DB
-   loadTokens(db, tokensfile)
+   loadTokens(db, workflow, tokensfile)
