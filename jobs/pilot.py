@@ -43,7 +43,7 @@ class ExampleActor(RunActor):
 
         # Start running the main job        
         command = ["/usr/bin/time", f"./master_{str(token['workflow'])}.sh",
-                   token['MSDATA'], token['CAT'], token['REPO'], token['SING_BIND'], token['SIMG_ORIGINAL'], token['SUBMODS']]
+                   token['MSDATA'], token['CAT'], token['REPO'], token['SING_BIND'], token['SIMG'], token['SUBMODS']]
         print(command)
         
         out = execute(command)
