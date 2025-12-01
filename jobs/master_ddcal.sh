@@ -4,14 +4,16 @@
 ######## INPUT #######
 ######################
 
-# Put information in tokens, so it is stored in the DB for reference
-CAT=$1 #/project/lofarvwf/Public/jdejong/picas_test/final_dd_selection.csv
-MSDATA=$2 #/project/lofarvwf/Public/jdejong/picas_test/msdata
+# Use the DB to store information for reference (paths to software etc.)
+MSDATA=$1 #/project/lofarvwf/Public/jdejong/picas_test/msdata
+CAT=$2 #/project/lofarvwf/Public/jdejong/picas_test/final_dd_selection.csv
 REPO=$3 #https://git.astron.nl/RD/VLBI-cwl.git
+SING_BIND=$4 #'/project/lofarvwf/'
+SIMG_ORIGINAL=$5 #/project/lofarvwf/Public/jdejong/picas_test/test_sep_2025.sif
+SUBMODS=$6 #/project/lofarvwf/Software/lofar_facet_selfcal/submods
+
 
 export TOIL_SLURM_ARGS="--export=ALL -t 12:00:00"
-SING_BIND="/project/lofarvwf/"
-
 ######################
 ######################
 
@@ -26,7 +28,7 @@ cd ../
 SIMG=vlbi-cwl.sif
 export CACHEDIR=singularity_cache
 mkdir -p $CACHEDIR
-cp /project/lofarvwf/Public/jdejong/picas_test/test_sep_2025.sif $CACHEDIR/$SIMG
+cp $SIMG_ORIGINAL $CACHEDIR/$SIMG
 mkdir -p $CACHEDIR/pull
 cp $CACHEDIR/$SIMG $CACHEDIR/pull/vlbi-cwl.sif
 chmod 755 -R $CACHEDIR
@@ -39,7 +41,7 @@ export APPTAINER_TMPDIR=${APPTAINER_CACHEDIR}/tmp
 export CWL_SINGULARITY_CACHE=$APPTAINER_CACHEDIR
 export APPTAINERENV_VLBI_DATA_ROOT=$VLBI_DATA_ROOT
 export APPTAINERENV_PREPEND_PATH=$VLBI_DATA_ROOT/scripts
-export APPTAINERENV_PYTHONPATH=/project/lofarvwf/Software/lofar_facet_selfcal/submods:$VLBI_DATA_ROOT/scripts:\$PYTHONPATH
+export APPTAINERENV_PYTHONPATH=$SUBMODS:$VLBI_DATA_ROOT/scripts:\$PYTHONPATH
 export APPTAINER_BIND=$SING_BIND
 export TOIL_CHECK_ENV=True
 

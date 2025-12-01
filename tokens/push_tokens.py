@@ -51,8 +51,11 @@ def create_tokens(workflow, fields: dict, offset: int = 0) -> list:
                 'hostname': '',
                 'scrub_count': 0,
                 'toil_retry': 2,
-                'repo': 'https://git.astron.nl/RD/VLBI-cwl.git',
-                'cat': '/project/lofarvwf/Public/jdejong/picas_test/msdata',
+                'CAT': '/project/lofarvwf/Public/jdejong/picas_test/final_dd_selection.csv',
+                'REPO': 'https://git.astron.nl/RD/VLBI-cwl.git',                
+                'SING_BIND': '/project/lofarvwf/',
+                'SIMG': '/project/lofarvwf/Public/jdejong/picas_test/test_sep_2025.sif', 
+                'SUBMODS': '/project/lofarvwf/Software/lofar_facet_selfcal/submods',       
                 'exit_code': '',
                 'wms_jobid':'',
                 'workflow': workflow,
@@ -69,7 +72,7 @@ def loadTokens(db, tokensfile):
 
     # Get number of token parameters from tokensfile
     with open(tokensfile) as f:
-        msdata = {"msdata": f.read().splitlines()}
+        msdata = {"MSDATA": f.read().splitlines()}
     workflow = "ddcal"
         
     # get tokens
