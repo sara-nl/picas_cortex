@@ -14,11 +14,10 @@ Description:
    - Saves the tokens to the database
 """
 import sys
-import time
+import datetime
 import getpass
-import os
-from picas.clients import CouchDB
 import picasconfig
+from picas.clients import CouchDB
 from picas.documents import Task
 
 
@@ -53,7 +52,9 @@ def create_tokens(workflow, fields: dict, offset: int = 0) -> list:
 
     # Get info to put in tokens
     # username
-    username =  getpass.getuser()
+    username = getpass.getuser()
+    # put dateandtime in token
+    datetimestr = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S.%f")
 
     # Use the DB to store information for reference (paths to software etc.)
     # These will be fetched from the token and used in processing (passed to master_ddcal.sh)
@@ -62,7 +63,7 @@ def create_tokens(workflow, fields: dict, offset: int = 0) -> list:
     for arg in fields:
         for line in fields[arg]:
             token = {
-                '_id': 'token_' + str(n_docs),
+                '_id': 'token_' + workflow + '_' + str(n_docs) + '_' + datetimestr,
                 'type': 'token',
                 'user': username,
                 'hostname': '',

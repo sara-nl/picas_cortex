@@ -52,13 +52,13 @@ wsclean \
 -name 1.2image \
 -scale 0.4arcsec \
 -taper-gaussian 1.2asec \
--niter 2000000 \
+-niter 1 \ #for fast testing, was 2000000 \
 -log-time \
 -multiscale-scale-bias 0.7 \
 -parallel-deconvolution 2600 \
 -multiscale \
 -multiscale-max-scales 9 \
--nmiter 6 \
+-nmiter 1 \ # for fast testing, was 6 \
 -facet-regions facets.reg \
 -apply-facet-solutions merged.h5 amplitude000,phase000 \
 -parallel-gridding 6 \

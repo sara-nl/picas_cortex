@@ -17,6 +17,7 @@ import time
 import sys
 import json
 import picasconfig
+import push_tokens
 #picas imports
 from picas.actors import RunActor
 from picas.clients import CouchDB
@@ -72,7 +73,6 @@ class ExampleActor(RunActor):
             f.write(out[3].decode('utf-8'))
 
         # Attach logs in token
-        curdate = time.strftime("%d/%m/%Y_%H:%M:%S_")
         try:
             log_handle = open(logsout, 'rb')
             token.put_attachment(logsout, log_handle.read())
@@ -81,13 +81,26 @@ class ExampleActor(RunActor):
             token.put_attachment(logserr, log_handle.read())
             # Attach used input.json in token
             if token['exit_code']==0 and token['workflow']=='ddcal':
-               filename = ""
-               f = open("input.json", 'rb')
+               filename = "input.json"
+               f = open(filename, 'rb')
                token.put_attachment(filename, f.read())
                f.close()
 
         except:
            pass
+
+        # if "ddcal" token succeeded, create "imaging" token
+        if token["exit_code"]==0 and workflow=="ddcal":
+
+            # Create tokensfile
+            tokensfile = "tokensfile.txt"
+            with open(tokensfile, "w") as f:
+                f.write(token["msdata"])
+
+            # Pass outdir from "ddcal" job to new "imaging" token
+            push_tokens.imaging_fields['SOLS'] = token["output"]
+            push_tokens.loadTokens(self.db, "imaging", tokensfile)        
+
 
 def main():
 
@@ -97,7 +110,6 @@ def main():
        workflow = sys.argv[1]
 
     # setup connection to db
-    db_name = picasconfig.PICAS_DATABASE
     client = CouchDB(url=picasconfig.PICAS_HOST_URL, db=picasconfig.PICAS_DATABASE, username=picasconfig.PICAS_USERNAME, password=picasconfig.PICAS_PASSWORD)
     # Create token modifier
     modifier = BasicTokenModifier()

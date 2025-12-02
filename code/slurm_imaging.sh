@@ -1,4 +1,6 @@
 #!/bin/bash
+#SBATCH --output=imaging_%j.out
+#SBATCH --error=imaging_%j.err
 #SBATCH -c 16 -t 96:00:00
 
 #@helpdesk: SURF helpdesk <helpdesk@surf.nl>
@@ -19,14 +21,13 @@ echo "Start timestamp: $(date)"
 workdir="$PWD"
 
 # make a separate directory for each observation (master toil-job)
-mkdir "$workdir"/jobid_${SLURM_JOB_ID}
+mkdir "$workdir"/imaging_${SLURM_JOB_ID}
 
 # copy code and config files to scratch dir
 script_dir="$PWD"
-cp ${script_dir}/*.py ${workdir}/jobid_${SLURM_JOB_ID}/.
-cp ${script_dir}/*.sh ${workdir}/jobid_${SLURM_JOB_ID}/.
-# cp ${script_dir}/../../config/* ${workdir}/jobid_${SLURM_JOB_ID}/.
-cd ${workdir}/jobid_${SLURM_JOB_ID}
+cp ${script_dir}/*.py ${workdir}/imaging_${SLURM_JOB_ID}/.
+cp ${script_dir}/*.sh ${workdir}/imaging_${SLURM_JOB_ID}/.
+cd ${workdir}/imaging_${SLURM_JOB_ID}
 
 # You may set environmental variables needed in the SLURM job or load them from a script:
 source /project/lofarvwf/Public/hhu/venv/bin/activate
