@@ -95,7 +95,7 @@ class ExampleActor(RunActor):
             # Create tokensfile
             tokensfile = "tokensfile.txt"
             with open(tokensfile, "w") as f:
-                f.write(token["msdata"])
+                f.write(token["MSDATA"])
 
             # Pass outdir from "ddcal" job to new "imaging" token
             push_tokens.imaging_fields['SOLS'] = token["output"]
