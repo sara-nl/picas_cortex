@@ -32,7 +32,16 @@ cd ${workdir}/ddcal_${SLURM_JOB_ID}
 # You may set environmental variables needed in the SLURM job or load them from a script:
 source /project/lofarvwf/Public/hhu/venv/bin/activate
 
+
 # Run pilot job
 python pilot.py "ddcal"
+exit_code=$?
+
+if [ $exit_code -eq 0 ] ; then
+   echo "ddcal pilot job succeeded, submitting imaging pilot job"
+   sbatch slurm_imaging.sh
+else
+   echo "ddcal pilot job failed"
+fi
 
 deactivate
