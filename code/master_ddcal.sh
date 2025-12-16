@@ -100,23 +100,26 @@ mkdir -p $LOGDIR
 
 # RUN TOIL
 
-toil-cwl-runner \
---no-read-only \
---retryCount 2 \
---singularity \
---disableCaching \
---logFile full_log.log \
---writeLogs ${LOGDIR} \
---outdir ${OUTPUT} \
---tmp-outdir-prefix ${TMPD}/ \
---jobStore ${JOBSTORE} \
---workDir ${WORKDIR} \
---disableAutoDeployment True \
---bypass-file-store \
---cleanWorkDir onSuccess \
---eval-timeout 4000 \
---preserve-environment ${APPTAINERENV_PYTHONPATH} ${APPTAINER_BIND} ${APPTAINER_PULLDIR} ${APPTAINER_CACHEDIR} \
---batchSystem=slurm \
-software/VLBI_cwl/workflows/dd-calibration.cwl input.json
+# toil-cwl-runner \
+# --no-read-only \
+# --retryCount 2 \
+# --singularity \
+# --disableCaching \
+# --logFile full_log.log \
+# --writeLogs ${LOGDIR} \
+# --outdir ${OUTPUT} \
+# --tmp-outdir-prefix ${TMPD}/ \
+# --jobStore ${JOBSTORE} \
+# --workDir ${WORKDIR} \
+# --disableAutoDeployment True \
+# --bypass-file-store \
+# --cleanWorkDir onSuccess \
+# --eval-timeout 4000 \
+# --preserve-environment ${APPTAINERENV_PYTHONPATH} ${APPTAINER_BIND} ${APPTAINER_PULLDIR} ${APPTAINER_CACHEDIR} \
+# --batchSystem=slurm \
+# software/VLBI_cwl/workflows/dd-calibration.cwl input.json
+
+# For quick testing, copy output:
+cp -r /project/lofarvwf/Public/hhu/ddcal_test/outdir/* $OUTPUT/.
 
 ########################
