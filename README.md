@@ -71,10 +71,10 @@ sbatch slurm_ddcal.sh
 The script sets up the environment and runs the pilot job `pilot.py`. The pilot job makes connection the PiCaS DB, 
 fetches a "ddcal/todo" token and starts processing, i.e. running the `master_ddcal.sh`, which is just a slight adaptation of `ddcal.sh`.
 
-If the `ddcal` token is processed successfully, an `imaging` token will be created by `pilot.py`. The new token appears in the "imaging/todo" view and needs `imaging` pilot job to process it, which can be submitted with:
+If the `ddcal` token is processed successfully, an `imaging` token will be created by `pilot.py`. The new token appears in the "imaging/todo" view and needs an `imaging` pilot job to process it, which can be submitted with:
 ```
 sbatch slurm_imaging.sh
 ```
-For convenience the above command is called in `slurm_ddcal.sh` after the `ddcal` pilot job finishes. This ensures that the `imaging` pilot job starts automatically after the `ddcal` pilot job. 
+For convenience the above command is called in `slurm_ddcal.sh` after the `ddcal` pilot job finishes. This ensures that the `imaging` pilot job starts automatically after the `ddcal` pilot job. In real workflows, this could be done via scron jobs that continuously check if there is work to do (tokens to process).
 
-The scripts `master_ddcal.sh` and `master_imaging.sh` have been adapted for quick testing to illustrate how the PoC works with PiCaS tokens. See comments with "quick testing" in the scripts, to revert to full, long runs.
+The scripts `master_ddcal.sh` and `master_imaging.sh` have been adapted for quick testing to illustrate how the PoC works with PiCaS tokens, without doing the actual computations. See comments with "quick testing" in the scripts, to revert to full processing runs.
