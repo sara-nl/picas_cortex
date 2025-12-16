@@ -75,10 +75,6 @@ If the `ddcal` token is processed successfully, an `imaging` token will be creat
 ```
 sbatch slurm_imaging.sh
 ```
-For convenience this comand has been added to `slurm_ddcal.sh`, so that imaging pilot job automatically starts after the ddcal pilot job.
-Currently, the scripts `master_ddcal.sh` and `master_imaging.sh` have been adapted for quick testing to illustrate how the tokens are used. See comments with "quick testing" in the scripts, to revert to full, long runs.
+For convenience the above command is called in `slurm_ddcal.sh` after the `ddcal` pilot job finishes. This ensures that the `imaging` pilot job starts automatically after the `ddcal` pilot job. 
 
-Note that for testing, you can also run pilot jobs directly on the UI (not recommended as the job takes hours), instead of submitting it to SLURM:
-```
-python pilot.py ddcal
-```
+The scripts `master_ddcal.sh` and `master_imaging.sh` have been adapted for quick testing to illustrate how the PoC works with PiCaS tokens. See comments with "quick testing" in the scripts, to revert to full, long runs.

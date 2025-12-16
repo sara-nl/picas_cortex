@@ -98,7 +98,7 @@ class ExampleActor(RunActor):
                 f.write(token["MSDATA"])
 
             # Pass outdir from "ddcal" job to new "imaging" token
-            push_tokens.imaging_fields['SOLS'] = token["output"] + "//merged.h5"
+            push_tokens.imaging_fields['SOLS'] = token["output"] + "/merged.h5"
             push_tokens.loadTokens(self.db, "imaging", tokensfile)        
 
 
