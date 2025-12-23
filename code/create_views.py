@@ -14,7 +14,6 @@ import couchdb
 from couchdb.design import ViewDefinition
 from picas.picas_config import PicasConfig
 from picas.crypto import decrypt_password
-from picas.clients import CouchDB
 
 
 def get_view_code(condition: str) -> str:
@@ -98,6 +97,20 @@ function (key, values, rereduce) {
     overview_total_view.sync(db)
 
 
+def get_db() -> couchdb.Database:
+    """
+    Get the Picas database connection from the picasconfig module.
+    """
+    config = PicasConfig(load=True)    
+    server = couchdb.Server(config.config['host_url'])
+    username = config.config['username']
+    pwd = decrypt_password(config.config['encrypted_password']).decode()
+    server.resource.credentials = (username, pwd)
+    db = server[config.config['database']]
+
+    return db
+
+
 def parse_args() -> argparse.Namespace:
     """
     Parse command line arguments.
@@ -120,13 +133,8 @@ def parse_args() -> argparse.Namespace:
 if __name__ == '__main__':
     args = parse_args()
 
-    # create a connection to the DB server
-    config = PicasConfig(load=True)
-    client = CouchDB(
-        url=config.config['host_url'],
-        db=config.config['database'],
-        username=config.config['username'],
-        password=decrypt_password(config.config['encrypted_password']).decode())
+    # create a connection to the server
+    db = get_db()
 
     # create the views in database
     if args.example is None:
