@@ -29,6 +29,14 @@ If finished successfully, there should be output in `outdir`. Note: currently do
 Run with PiCaS
 ---
 
+### Create config file
+To be able to connect to the PiCaS database (DB), you need a configuration file ` ~/.config/picas/conf.yml` with your credentials. The config file is created with:
+```
+python create_config.py
+```
+You will be asked to enter your account details. The password is stored encrypted.
+
+
 ### Create views
 
 If you start with an empty DB, you first need to create views. Standard views ("Monitor") are created with:
@@ -50,11 +58,6 @@ For example, for the test run:
 ```
 cd picas_cortex/code
 echo "/project/lofarvwf/Public/jdejong/picas_test/msdata" > tokensfile.txt
-```
-To connect to the PiCaS database (DB), you need to have a `picasconfig.py` with your credentials.
-You can copy "picasconfig_template.py" and fill it in. IMPORTANT: if you are running in a shared or public directory, make sure you change the permissions of picasconfig.py so that it is not readable by others!
-```
-chmod 700 picasconfig.py
 ```
 
 Now create the tokens and store them in the DB with:
