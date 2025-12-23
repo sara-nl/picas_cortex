@@ -14,6 +14,7 @@ import couchdb
 from couchdb.design import ViewDefinition
 from picas.picas_config import PicasConfig
 from picas.crypto import decrypt_password
+from picas.clients import CouchDB
 
 
 def get_view_code(condition: str) -> str:
