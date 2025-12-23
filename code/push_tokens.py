@@ -88,7 +88,6 @@ def create_tokens(workflow, fields: dict, offset: int = 0) -> list:
     return tokens
 
 
-
 def loadTokens(db, workflow, tokensfile):
 
     # Get number of token parameters from tokensfile (in this case, folder MSDATA with observations)
@@ -102,24 +101,19 @@ def loadTokens(db, workflow, tokensfile):
     # store tokens on DB
     db.save_documents(tokens)
  
-def get_db():
-    # create a connection to the server
-    config = PicasConfig(load=True)
-    db = CouchDB(
-        url=config.config['host_url'],
-        db=config.config['database'],
-        username=config.config['username'],
-        password=decrypt_password(config.config['encrypted_password']).decode())
-
-    return db
-
 
 if __name__ == '__main__':
-   # Pass tokenfile and workflow to token
-   workflow = sys.argv[1] # ddcal or imaging
-   tokensfile = sys.argv[2]
+    # Pass tokenfile and workflow to token
+    workflow = sys.argv[1] # ddcal or imaging
+    tokensfile = sys.argv[2]
 
-   #Create a connection to the DB server
-   db = get_db()
-   #create and load the tokens to DB
-   loadTokens(db, workflow, tokensfile)
+    # setup connection to DB server
+    config = PicasConfig(load=True)
+    db = CouchDB(
+       url=config.config['host_url'],
+       db=config.config['database'],
+       username=config.config['username'],
+       password=decrypt_password(config.config['encrypted_password']).decode())
+       
+    #create and load the tokens to DB
+    loadTokens(db, workflow, tokensfile)

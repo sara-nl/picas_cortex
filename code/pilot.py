@@ -108,7 +108,7 @@ def main():
     else:
        workflow = sys.argv[1]
 
-    # setup connection to db
+    # setup connection to DB server
     config = PicasConfig(load=True)
     client = CouchDB(
         url=config.config['host_url'],

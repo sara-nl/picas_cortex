@@ -1,7 +1,5 @@
 #! /usr/bin/env python3
 """
-@helpdesk: SURF helpdesk <helpdesk@surf.nl>
-
 usage: python createViews.py [picas_db_name] [picas_username] [picas_pwd]
 description: create the following Views in [picas_db_name]:
     todo View : lock_timestamp == 0 && done_timestamp == 0
@@ -14,7 +12,8 @@ description: create the following Views in [picas_db_name]:
 import argparse
 import couchdb
 from couchdb.design import ViewDefinition
-import picasconfig
+from picas.picas_config import PicasConfig
+from picas.crypto import decrypt_password
 
 
 def get_view_code(condition: str) -> str:
@@ -98,19 +97,6 @@ function (key, values, rereduce) {
     overview_total_view.sync(db)
 
 
-def get_db() -> couchdb.Database:
-    """
-    Get the Picas database connection from the picasconfig module.
-    """
-    server = couchdb.Server(picasconfig.PICAS_HOST_URL)
-    username = picasconfig.PICAS_USERNAME
-    pwd = picasconfig.PICAS_PASSWORD
-    server.resource.credentials = (username, pwd)
-    db = server[picasconfig.PICAS_DATABASE]
-
-    return db
-
-
 def parse_args() -> argparse.Namespace:
     """
     Parse command line arguments.
@@ -133,8 +119,13 @@ def parse_args() -> argparse.Namespace:
 if __name__ == '__main__':
     args = parse_args()
 
-    # create a connection to the server
-    db = get_db()
+    # create a connection to the DB server
+    config = PicasConfig(load=True)
+    client = CouchDB(
+        url=config.config['host_url'],
+        db=config.config['database'],
+        username=config.config['username'],
+        password=decrypt_password(config.config['encrypted_password']).decode())
 
     # create the views in database
     if args.example is None:

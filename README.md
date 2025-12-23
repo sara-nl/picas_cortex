@@ -32,6 +32,7 @@ Run with PiCaS
 ### Create config file
 To be able to connect to the PiCaS database (DB), you need a configuration file ` ~/.config/picas/conf.yml` with your credentials. The config file is created with:
 ```
+cd picas_cortex/code
 python create_config.py
 ```
 You will be asked to enter your account details. The password is stored encrypted.
@@ -41,7 +42,6 @@ You will be asked to enter your account details. The password is stored encrypte
 
 If you start with an empty DB, you first need to create views. Standard views ("Monitor") are created with:
 ```
-cd picas_cortex/code 
 python create_views.py
 ```
 For this PoC, we also need additional views for specific workflows ("ddcal" and "imaging"). Create these with:
@@ -56,7 +56,6 @@ First create inputfile `tokensfile.txt`. There will be a token generated for eac
 The line gives the directory with the observation to be processed. 
 For example, for the test run:
 ```
-cd picas_cortex/code
 echo "/project/lofarvwf/Public/jdejong/picas_test/msdata" > tokensfile.txt
 ```
 
