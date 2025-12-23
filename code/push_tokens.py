@@ -16,7 +16,8 @@ Description:
 import sys
 import datetime
 import getpass
-import picasconfig
+from picas.picas_config import PicasConfig
+from picas.crypto import decrypt_password
 from picas.clients import CouchDB
 from picas.documents import Task
 
@@ -103,11 +104,12 @@ def loadTokens(db, workflow, tokensfile):
  
 def get_db():
     # create a connection to the server
+    config = PicasConfig(load=True)
     db = CouchDB(
-        url=picasconfig.PICAS_HOST_URL,
-        db=picasconfig.PICAS_DATABASE,
-        username=picasconfig.PICAS_USERNAME,
-        password=picasconfig.PICAS_PASSWORD)
+        url=config.config['host_url'],
+        db=config.config['database'],
+        username=config.config['username'],
+        password=decrypt_password(config.config['encrypted_password']).decode())
 
     return db
 

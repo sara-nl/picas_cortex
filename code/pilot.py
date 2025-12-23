@@ -13,12 +13,11 @@ description:
 
 #python imports
 import os
-import time
 import sys
-import json
-import picasconfig
 import push_tokens
 #picas imports
+from picas.picas_config import PicasConfig
+from picas.crypto import decrypt_password
 from picas.actors import RunActor
 from picas.clients import CouchDB
 from picas.iterators import TaskViewIterator
@@ -110,7 +109,13 @@ def main():
        workflow = sys.argv[1]
 
     # setup connection to db
-    client = CouchDB(url=picasconfig.PICAS_HOST_URL, db=picasconfig.PICAS_DATABASE, username=picasconfig.PICAS_USERNAME, password=picasconfig.PICAS_PASSWORD)
+    config = PicasConfig(load=True)
+    client = CouchDB(
+        url=config.config['host_url'],
+        db=config.config['database'],
+        username=config.config['username'],
+        password=decrypt_password(config.config['encrypted_password']).decode())
+
     # Create token modifier
     modifier = BasicTokenModifier()
 
