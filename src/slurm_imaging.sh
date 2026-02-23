@@ -16,6 +16,10 @@
 
 echo "Start timestamp: $(date)"
 
+# Set environmental variables needed in the SLURM job,
+# and/or activate virtual environnment:
+source .venv/bin/activate
+
 # Use local scratch storage for faster I/O (does not work because toil-jobs need access)
 #workdir="$TMPDIR"
 workdir="$PWD"
@@ -29,8 +33,6 @@ cp ${script_dir}/*.py ${workdir}/imaging_${SLURM_JOB_ID}/.
 cp ${script_dir}/*.sh ${workdir}/imaging_${SLURM_JOB_ID}/.
 cd ${workdir}/imaging_${SLURM_JOB_ID}
 
-# You may set environmental variables needed in the SLURM job or load them from a script:
-source /project/lofarvwf/Public/hhu/venv/bin/activate
 
 # Run pilot job
 python pilot.py "imaging"

@@ -1,26 +1,26 @@
-PoC: PiCaS for CORTEX-lofarvwf (WIP)
+PoC: PiCaS for CORTEX-lofarvwf
 ====
 
 Install
 ---
-Clone this repo:
+Clone this repository and go into the `src` directory:
 ```
 git clone https://github.com/sara-nl/picas_cortex.git
+cd picas_cortex/src
 ```
 Install dependencies in a virtual environment, for example:
 
 ```
-cd picas_cortex
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install --upgrade pip
+pip install -r ../requirements.txt
 ```
 
 Original test run
 ---
 This is the original test run, nothing changed. It is given here just for reference; it can be skipped.
 ```
-cd src
 sbatch ddcal.sh
 ```
 If finished successfully, there should be output in `outdir`. Note: currently does not work under user's home due to permission issues. Hence, run it under `/project/lofarvwf/Public`.
@@ -32,7 +32,6 @@ Run with PiCaS
 ### Create config file
 To be able to connect to the PiCaS database (DB), you need a configuration file ` ~/.config/picas/conf.yml` with your credentials. The config file is created with:
 ```
-cd src
 python create_config.py
 ```
 You will be asked to enter your account details. The password is stored encrypted.
