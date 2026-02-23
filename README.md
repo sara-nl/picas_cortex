@@ -10,8 +10,9 @@ git clone git@github.com:sara-nl/picas_cortex.git
 Install dependencies in a virtual environment, for example:
 
 ```
-python3 -m virtualenv <dirname>/venv
-source <dirname>/venv/bin/activate
+cd picas_cortex
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 where `<dirname>` is the directory where the virtual environment is installed.
@@ -20,7 +21,7 @@ Original test run
 ---
 This is the original test run, nothing changed. It is given here just for reference; it can be skipped.
 ```
-cd picas_cortex/code
+cd src
 sbatch ddcal.sh
 ```
 If finished successfully, there should be output in `outdir`. Note: currently does not work under user's home due to permission issues. Hence, run it under `/project/lofarvwf/Public`.
@@ -32,7 +33,7 @@ Run with PiCaS
 ### Create config file
 To be able to connect to the PiCaS database (DB), you need a configuration file ` ~/.config/picas/conf.yml` with your credentials. The config file is created with:
 ```
-cd picas_cortex/code
+cd src
 python create_config.py
 ```
 You will be asked to enter your account details. The password is stored encrypted.
