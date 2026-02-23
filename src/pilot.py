@@ -122,7 +122,7 @@ def main():
     # Create actor
     actor = ExampleActor(client, modifier, "todo", design_doc=workflow)    
     # Start work!
-    print("Connected to the database %s sucessfully. Now starting work..." %(picasconfig.PICAS_DATABASE))
+    print("Connected to the database %s sucessfully. Now starting work..." %(config.config['database']))
 
     # Exit pilot job, if runtime is larger than maxtime, after processing at least one token
     maxtime = 4*24*3600  # 4 days  
