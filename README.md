@@ -5,7 +5,7 @@ Install
 ---
 Clone this repo:
 ```
-git clone git@github.com:sara-nl/picas_cortex.git
+git clone https://github.com/sara-nl/picas_cortex.git
 ```
 Install dependencies in a virtual environment, for example:
 
@@ -15,7 +15,6 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
-where `<dirname>` is the directory where the virtual environment is installed.
 
 Original test run
 ---
