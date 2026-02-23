@@ -26,12 +26,12 @@ ddcal_fields = {
                 'CAT': '/project/lofarvwf/Public/jdejong/picas_test/final_dd_selection.csv',
                 'REPO': 'https://git.astron.nl/RD/VLBI-cwl.git',                
                 'SING_BIND': '/project/lofarvwf/',
-                'SIMG': '/project/lofarvwf/Public/jdejong/picas_test/test_sep_2025.sif', 
+                'SIMG': '/project/lofarvwf/Public/jdejong/picas_test/flocs_v6.1.0_znver2_znver2.sif', 
                 'SUBMODS': '/project/lofarvwf/Software/lofar_facet_selfcal/submods'    
 }
 
 imaging_fields = {
-                'SIMG': '/project/lofarvwf/Public/jdejong/picas_test/test_sep_2025.sif', 
+                'SIMG': '/project/lofarvwf/Public/jdejong/picas_test/flocs_v6.1.0_znver2_znver2.sif', 
                 'BIND_DIR': '/project/lofarvwf/Public',
                 'SOLS': 'outdir/merged.h5',
 }
